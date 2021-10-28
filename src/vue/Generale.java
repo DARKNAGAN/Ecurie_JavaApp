@@ -48,9 +48,9 @@ public class Generale extends JFrame implements ActionListener
 		private FormCours uneFormCour = new FormCours();
 	/*AFFICHAGE GENERAL APPLI*/
 	public Generale(Formateur unFormateur) {
-		ImageIcon logo = new ImageIcon(new ImageIcon("./images/favicon.png").getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+		ImageIcon logo = new ImageIcon(new ImageIcon("src/images/favicon.png").getImage());
 		this.setIconImage(logo.getImage());
-		this.setTitle("Ecuries");
+		this.setTitle("Ecurie");
 		this.setBounds(300, 150, 800, 500);
 		this.getContentPane().setBackground(new Color(247,245,226));
 		this.setLayout(null);

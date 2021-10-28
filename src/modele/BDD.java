@@ -23,6 +23,7 @@ public class BDD {
 		}
 		catch(ClassNotFoundException exp) {
 			System.out.println("Abscence du pilote JDBC !");
+			System.out.println("Vérifier Project -> Build Path -> Configure -> Libraries -> Add External JARs");
 		}
 	}
 	public void seConnecter() {

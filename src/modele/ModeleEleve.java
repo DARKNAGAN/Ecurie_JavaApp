@@ -10,7 +10,7 @@ public class ModeleEleve
 {
 	public static ArrayList<Eleve> selectAll() {
 		ArrayList<Eleve> lesEleves = new ArrayList<Eleve>();
-		String requete = "select * from compteeleve;";
+		String requete = "select * from Eleve;";
 		try {
 				BDD uneBDD = new BDD();
 				uneBDD.seConnecter();
@@ -43,7 +43,7 @@ public class ModeleEleve
 		return lesEleves;
 	}
 	public static Eleve selectWhere(String mail) {
-		String requete = "select * from compteeleve where adressemail='" + mail + "';";
+		String requete = "select * from Eleve where adressemail='" + mail + "';";
 		Eleve unEleve = null;
 		try {
 			BDD uneBDD = new BDD();
@@ -76,7 +76,7 @@ public class ModeleEleve
 		return unEleve;
 	}
 	public static void insert(Eleve unEleve) {
-		String requete = "insert into CompteEleve (privilege, dateenregistre, pseudo, prenom, nom, sexe, age, adresse, mdp, adressemail, galop, imageeleve) values ('" 
+		String requete = "insert into Eleve (privilege, dateenregistre, pseudo, prenom, nom, sexe, age, adresse, mdp, adressemail, galop, imageeleve) values ('" 
 			+ "2', NOW(), 'NEW', '"
 			+ unEleve.getPrenom() + "', '"
 			+ unEleve.getNom() + "', '"
@@ -120,7 +120,7 @@ public class ModeleEleve
 			else { valueAdresse = ", adresse = '"+ unEleve.getAdresse() +"'"; }
 		if (String.valueOf(unEleve.getGalop()).equals("")) { valueGalop = ""; }	
 			else { valueGalop = ", galop = "+ unEleve.getGalop(); }
-		String requete = "update compteeleve set adressemail ='"+ unEleve.getMail() +"'" + valuePrenom + valueNom + valueSexe + valueAge + valueAdresse + valueGalop + " where adressemail='"+ mail +"';";
+		String requete = "update Eleve set adressemail ='"+ unEleve.getMail() +"'" + valuePrenom + valueNom + valueSexe + valueAge + valueAdresse + valueGalop + " where adressemail='"+ mail +"';";
 		try {
 			BDD uneBDD = new BDD();
 			uneBDD.seConnecter();
@@ -134,7 +134,7 @@ public class ModeleEleve
 		}
 	}
 	public static void delete(String mail) {
-		String requete = "delete from CompteEleve where adressemail='" + mail + "';";
+		String requete = "delete from Eleve where adressemail='" + mail + "';";
 		try {
 			BDD uneBDD = new BDD();
 			uneBDD.seConnecter();
