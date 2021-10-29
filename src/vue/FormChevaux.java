@@ -1,21 +1,10 @@
-package vue.Formulaire;
+package vue;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Image;
+import java.awt.*;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 import controleur.Cheval;
 import modele.ModeleCheval;
 
@@ -25,7 +14,7 @@ public class FormChevaux extends JPanel implements ActionListener
 	String[] formState = { "VISUALISER", "AJOUTER", "SUPPRIMER" };
 	String id, nom, sexe, robe, type, race, proprietaire, age, imagecheval = "";
 	int selection;
-	private JComboBox choiceForm = new JComboBox(formState);
+	private JComboBox<String> choiceForm = new JComboBox<>(formState);
 	private JLabel txtId = new JLabel();
 	private JTextField txtNom = new JTextField("");
 	private ButtonGroup groupSexe = new ButtonGroup();
@@ -42,7 +31,7 @@ public class FormChevaux extends JPanel implements ActionListener
 	public FormChevaux()
 	{
 		//Configuration des composants
-		JLabel lbVide1 = new JLabel("");JLabel lbVide2 = new JLabel("");JLabel lbVide3 = new JLabel("");JLabel lbVide4 = new JLabel("");
+		JLabel lbVide1 = new JLabel("");JLabel lbVide2 = new JLabel("");
 		this.setBounds(50, 80, 650, 250);this.setLayout(new GridLayout(0, 2));this.setBackground(new Color(222,220,203));
 		JLabel lbId = new JLabel(" ID :");lbId.setFont(new Font(lbId.getText(), Font.CENTER_BASELINE, 18));
 		JLabel lbNom = new JLabel(" Nom :");lbNom.setFont(new Font(lbNom.getText(), Font.CENTER_BASELINE, 18));

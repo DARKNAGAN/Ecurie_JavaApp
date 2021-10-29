@@ -1,13 +1,7 @@
-package vue.Formulaire;
+package vue;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.util.ArrayList;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import controleur.Cours;
+import java.awt.*;
+import javax.swing.*;
 
 public class FormCours extends JPanel
 {
