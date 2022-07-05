@@ -1,38 +1,98 @@
 package vue;
-
-import java.awt.Color;
-import java.awt.Font;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import java.awt.*;
+import javax.swing.*;
 import controleur.Formateur;
 
 public class VueAccueil extends JPanel
 {
 	private static final long serialVersionUID = -3549267272035293251L;
+	private final JPanel panel = new JPanel();
+	private final JPanel panel_1 = new JPanel();
+	private final JPanel panel_2 = new JPanel();
+	private final JLabel title = new JLabel(" Vos informations personnelles ");
+	private final JLabel lbId = new JLabel(" ID : ");
+	private final JLabel lbPrivilege = new JLabel(" Privilège : ");
+	private final JLabel lbLogin = new JLabel("Pseudo : ");
+	private final JLabel lbMail = new JLabel(" E-mail : ");
+	private final JLabel lbPrenom = new JLabel(" Prénom : ");
+	private final JLabel lbNom = new JLabel(" Nom : ");
+	private final JLabel lbAge = new JLabel(" Age : ");
+	private final JLabel lbSexe = new JLabel(" Sexe : ");
+	private final JLabel lbGalop = new JLabel(" Galop : ");	
+	private final JLabel textId = new JLabel();
+	private final JLabel textPrivilege = new JLabel();
+	private final JLabel textLogin = new JLabel();
+	private final JLabel textMail = new JLabel();
+	private final JLabel textPrenom = new JLabel();
+	private final JLabel textNom = new JLabel();
+	private final JLabel textAge = new JLabel();
+	private final JLabel textSexe = new JLabel();
+	private final JLabel textGalop = new JLabel();
 	public VueAccueil(Formateur unFormateur)
 	{
-		this.setBounds(30, 80, 720, 330);
-		this.setBackground(new Color(222,220,203));
-		this.setLayout(null);
-		JLabel lbFormateur = new JLabel("Accueil / Votre Formateur");
-		lbFormateur.setBounds(250, 0, 300, 50);
-		lbFormateur.setFont(new Font(lbFormateur.getText(), Font.CENTER_BASELINE + Font.BOLD, 20));
-		JTextArea txtTitre = new JTextArea();
-		txtTitre.setBounds(30, 50, 660, 250);
-		//txtTitre.setBounds(x, y, width, height);
-		txtTitre.setEditable(false);
-		txtTitre.setBackground(new Color(197,196,180));
-		txtTitre.setFont(new Font(txtTitre.getText(), Font.PLAIN, 16));
-		// txtTitre.setAlignmentX(JTextArea.CENTER_ALIGNMENT);
-		txtTitre.setText( "\n Nom :          " + "" + unFormateur.getNom()
-						+ "\n Prénom :     " + "" + unFormateur.getPrenom()
-						+ "\n Age :        " + "" + unFormateur.getAge()
-						+ "\n Sexe :       " + "" + unFormateur.getSexe()
-						+ "\n Galop :      " + "" + unFormateur.getGalop()
-						+ "\n Privilege :  " + "" + unFormateur.getPrivilege());
-		this.add(lbFormateur);
-		this.add(txtTitre);
-		this.setVisible(true);
+		this.setLayout(new BorderLayout(0, 0));
+		this.add(panel, BorderLayout.NORTH);
+		panel.setLayout(new BorderLayout(0, 30));
+		panel.add(panel_1, BorderLayout.NORTH);
+		panel.add(panel_2, BorderLayout.CENTER);
+		panel_1.setLayout(new BorderLayout(0, 0));
+		title.setHorizontalAlignment(SwingConstants.CENTER);
+		title.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 25));
+		panel_1.add(title, BorderLayout.CENTER);
+		textId.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		textId.setHorizontalAlignment(SwingConstants.LEFT);
+		this.textId.setText(String.valueOf(unFormateur.getId()));
+		textPrivilege.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		textPrivilege.setHorizontalAlignment(SwingConstants.LEFT);
+		this.textPrivilege.setText(String.valueOf(unFormateur.getPrivilege()));
+		textLogin.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		textLogin.setHorizontalAlignment(SwingConstants.LEFT);
+		this.textLogin.setText(unFormateur.getLogin());
+		textMail.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		textMail.setHorizontalAlignment(SwingConstants.LEFT);
+		this.textMail.setText(unFormateur.getMail());
+		textPrenom.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		textPrenom.setHorizontalAlignment(SwingConstants.LEFT);
+		this.textPrenom.setText(unFormateur.getPrenom());
+		textNom.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		textNom.setHorizontalAlignment(SwingConstants.LEFT);
+		this.textNom.setText(unFormateur.getNom());
+		textAge.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		textAge.setHorizontalAlignment(SwingConstants.LEFT);
+		this.textAge.setText(String.valueOf(unFormateur.getAge()));
+		textSexe.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		textSexe.setHorizontalAlignment(SwingConstants.LEFT);
+		this.textSexe.setText(unFormateur.getSexe());
+		textGalop.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		textGalop.setHorizontalAlignment(SwingConstants.LEFT);
+		this.textGalop.setText(String.valueOf(unFormateur.getGalop()));	
+		panel_2.setLayout(new GridLayout(9, 2, 40, 0));
+		lbId.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbId.setFont(new Font("Book Antiqua", Font.BOLD, 20));
+		panel_2.add(lbId);panel_2.add(textId);
+		lbPrivilege.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbPrivilege.setFont(new Font("Book Antiqua", Font.BOLD, 20));
+		panel_2.add(lbPrivilege);panel_2.add(textPrivilege);
+		lbLogin.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbLogin.setFont(new Font("Book Antiqua", Font.BOLD, 20));
+		panel_2.add(lbLogin);panel_2.add(textLogin);
+		lbMail.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbMail.setFont(new Font("Book Antiqua", Font.BOLD, 20));
+		panel_2.add(lbMail);panel_2.add(textMail);
+		lbPrenom.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbPrenom.setFont(new Font("Book Antiqua", Font.BOLD, 20));
+		panel_2.add(lbPrenom);panel_2.add(textPrenom);
+		lbNom.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbNom.setFont(new Font("Book Antiqua", Font.BOLD, 20));
+		panel_2.add(lbNom);panel_2.add(textNom);
+		lbAge.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbAge.setFont(new Font("Book Antiqua", Font.BOLD, 20));
+		panel_2.add(lbAge);panel_2.add(textAge);
+		lbSexe.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbSexe.setFont(new Font("Book Antiqua", Font.BOLD, 20));
+		panel_2.add(lbSexe);panel_2.add(textSexe);
+		lbGalop.setHorizontalAlignment(SwingConstants.RIGHT);
+		lbGalop.setFont(new Font("Book Antiqua", Font.BOLD, 20));
+		panel_2.add(lbGalop);panel_2.add(textGalop);
 	}
 }

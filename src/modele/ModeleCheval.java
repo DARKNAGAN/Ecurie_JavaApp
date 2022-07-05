@@ -68,15 +68,15 @@ public class ModeleCheval {
 		return unCheval;
 	}
 	public static void insert(Cheval unCheval) {
-		String requete = "insert into Cheval (nom, sexe, robe, type, race, proprietaire, age) values ('" 
+		String requete = "insert into Cheval (nom, sexe, robe, type, race, proprietaire, age, imagecheval) values ('" 
 				+ unCheval.getNom() + "', '" 
 				+ unCheval.getSexe() + "', '" 
 				+ unCheval.getRobe() + "', '" 
 				+ unCheval.getType() + "', '" 
 				+ unCheval.getRace() + "', '" 
 				+ unCheval.getProprietaire() + "', '" 
-				+ unCheval.getAge() + "');";
-				/*+ unCheval.getImage()+ "');";*/
+				+ unCheval.getAge() + "', '"
+				+ "/images/chevaux/img_cheval.jpg');";
 		try {
 				BDD uneBDD = new BDD();
 				uneBDD.seConnecter();

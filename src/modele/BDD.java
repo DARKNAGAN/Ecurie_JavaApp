@@ -9,10 +9,10 @@ public class BDD {
 	private Connection maConnexion;
 	
 	public BDD() {
-		this.serveur = "localhost";
+		this.serveur = "nasccb:3307";
 		this.nombdd = "Ecurie";
-		this.user = "USER";
-		this.mdp = "MDP";
+		this.user = "christian";
+		this.mdp = "F8orP#NRqd#oKLQ#";
 		this.maConnexion = null;
 	}
 	public void chargerPilote() {

@@ -3,7 +3,7 @@ package controleur;
 import vue.Connexion;
 
 public class Gestion
-{
+{/*GESTION N EST PAS UTILISER CAR INCOMPREHENSIBLE POUR CCB - ALL IS IN Connexion*/
 	private static Connexion uneConnexion;
 	public Gestion()
 	{
@@ -20,4 +20,5 @@ public class Gestion
 	{
 		new Gestion();
 	}
+	
 }

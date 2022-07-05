@@ -2,162 +2,269 @@ package vue;
 
 import java.awt.*;
 import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+
 import controleur.Cheval;
 import modele.ModeleCheval;
 
 public class FormChevaux extends JPanel implements ActionListener 
 {
 	private static final long serialVersionUID = -2223951904837426516L;
-	String[] formState = { "VISUALISER", "AJOUTER", "SUPPRIMER" };
 	String id, nom, sexe, robe, type, race, proprietaire, age, imagecheval = "";
 	int selection;
-	private JComboBox<String> choiceForm = new JComboBox<>(formState);
-	private JLabel txtId = new JLabel();
-	private JTextField txtNom = new JTextField("");
-	private ButtonGroup groupSexe = new ButtonGroup();
-	private JRadioButton txtSexeF = new JRadioButton("Femelle");
-	private JRadioButton txtSexeH = new JRadioButton("Mâle");
-	private JTextField txtRobe = new JTextField();
-	private JTextField txtType = new JTextField("");
-	private JTextField txtRace = new JTextField("");
-	private JTextField txtProprietaire = new JTextField("");
-	private JTextField txtAge = new JTextField("");
-	//IMG Cheval
-	private JButton btAnnuler = new JButton("Annuler");
-	private JButton btAjouter = new JButton("Editer");
-	public FormChevaux()
-	{
-		//Configuration des composants
-		JLabel lbVide1 = new JLabel("");JLabel lbVide2 = new JLabel("");
-		this.setBounds(50, 80, 650, 250);this.setLayout(new GridLayout(0, 2));this.setBackground(new Color(222,220,203));
-		JLabel lbId = new JLabel(" ID :");lbId.setFont(new Font(lbId.getText(), Font.CENTER_BASELINE, 18));
-		JLabel lbNom = new JLabel(" Nom :");lbNom.setFont(new Font(lbNom.getText(), Font.CENTER_BASELINE, 18));
-		JLabel lbSexe = new JLabel(" Sexe :");lbSexe.setFont(new Font(lbSexe.getText(), Font.CENTER_BASELINE, 18));
-		txtSexeF.setMnemonic(KeyEvent.VK_B);txtSexeH.setMnemonic(KeyEvent.VK_B);
-		txtSexeF.setActionCommand("FEMELLE");txtSexeH.setActionCommand("MALE");txtSexeF.setSelected(true);
-		JLabel lbRobe = new JLabel(" Robe :");lbRobe.setFont(new Font(lbRobe.getText(), Font.CENTER_BASELINE, 18));
-		JLabel lbType = new JLabel(" Type :");lbType.setFont(new Font(lbType.getText(), Font.CENTER_BASELINE, 18));
-		JLabel lbRace = new JLabel(" Race :");lbRace.setFont(new Font(lbRace.getText(), Font.CENTER_BASELINE, 18));
-		JLabel lbProprietaire = new JLabel(" Proprietaire :");lbProprietaire.setFont(new Font(lbProprietaire.getText(), Font.CENTER_BASELINE, 18));
-		JLabel lbAge = new JLabel(" Âge :");lbAge.setFont(new Font(lbAge.getText(), Font.CENTER_BASELINE, 18));
-		choiceForm.setSelectedIndex(0);choiceForm.addActionListener(this);
-		//IMG Cheval
-		this.btAnnuler.setIcon(new ImageIcon(new ImageIcon("src/images/choix1.png").getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT)));this.btAnnuler.addActionListener(this);
-		this.btAjouter.setIcon(new ImageIcon(new ImageIcon("src/images/choix2.png").getImage().getScaledInstance(15, 15, Image.SCALE_DEFAULT)));this.btAjouter.addActionListener(this);
-		// Affichage des composants
-		this.add(lbId); this.add(this.txtId);
-		this.add(lbNom); this.add(this.txtNom);
-		this.add(lbSexe); this.add(this.txtSexeF);
-		this.add(lbVide1); this.add(this.txtSexeH);
-		groupSexe.add(txtSexeF); groupSexe.add(txtSexeH);
-		this.add(lbRobe); this.add(this.txtRobe);
-		this.add(lbType); this.add(this.txtType);
-		this.add(lbRace); this.add(this.txtRace);
-		this.add(lbProprietaire); this.add(this.txtProprietaire);
-		this.add(lbAge); this.add(this.txtAge);
-		this.add(this.choiceForm); this.add(lbVide2);
-		this.add(this.btAnnuler); this.add(this.btAjouter);
+	String[] formState = { " VISUALISER ", " AJOUTER ", " SUPPRIMER " };
+	String[] titresChevaux = new String[] {" Nom ", " Sexe ", " Age ", " Propriétaire ", " Race ", " Robe ", " Type "};
+	Object[][] dataChevaux =  extraireChevaux();
+	private final JPanel panel = new JPanel();
+	private final JPanel panel_9 = new JPanel();
+	private final JPanel panel_10 = new JPanel();
+	private final JPanel panel_11 = new JPanel();
+	private final JPanel panel_1 = new JPanel();
+	private final JPanel panel_2 = new JPanel();
+	private final JPanel panel_3 = new JPanel();
+	private final JPanel panel_4 = new JPanel();
+	private final JPanel panel_5 = new JPanel();
+	private final JPanel panel_6 = new JPanel();
+	private final JPanel panel_7 = new JPanel();
+	private final JPanel panel_8 = new JPanel();
+	private final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel, panel_10);
+	private final JTable tableChevaux = new JTable(dataChevaux, titresChevaux);
+	private final JScrollPane scrollTab = new JScrollPane(tableChevaux);
+	private final JLabel lbTitre = new JLabel(" Panneau de gestion des chevaux ");
+	private final JLabel titreChevaux= new JLabel(" Liste des chevaux ");
+	private final JLabel lbRace = new JLabel(" Race : ");
+	private final JLabel lbRobe = new JLabel(" Robe : ");
+	private final JLabel lbId = new JLabel(" ID : ");
+	private final JLabel lbAge = new JLabel(" Age : ");
+	private final JLabel lbNom = new JLabel(" Nom : ");
+	private final JLabel lbSexe = new JLabel(" Sexe : ");
+	private final JLabel lbType = new JLabel(" Type :");
+	private final JLabel lbProprietaire = new JLabel(" Propriétaire : ");
+	private final JLabel lbPhoto = new JLabel(" Photo : ");
+	private final JLabel imgPhoto = new JLabel();
+	private final JLabel textId = new JLabel();
+	private final JTextField textAge = new JTextField();
+	private final JTextField textRobe = new JTextField();
+	private final JTextField textProprietaire = new JTextField();
+	private final JTextField textRace = new JTextField();
+	private final JTextField textType = new JTextField();
+	private final JTextField textNom = new JTextField();
+	private final JRadioButton textSexeF = new JRadioButton(" Femelle ");
+	private final JRadioButton textSexeH = new JRadioButton(" Mâle ");
+	private final ButtonGroup groupSexe = new ButtonGroup();
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private final JComboBox choiceForm = new JComboBox(formState);
+	private final JButton btAnnuler = new JButton(" Annuler ");
+	private final JButton btAjouter = new JButton(" Valider ");
+
+	public FormChevaux()	{		
+		
+	 this.setBackground(new Color(222,220,203));
+	 setLayout(new BorderLayout(0, 0));	 
+	 this.add(splitPane);
+	 panel.setPreferredSize(new Dimension(500, 10));
+	 panel.setLayout(new BorderLayout(0, 30));
+	 panel.add(panel_11);
+	 panel_11.setLayout(new GridLayout(0, 1, 0, 0));	 
+	 panel_11.add(panel_1);
+	 panel_1.setLayout(new GridLayout(1, 4, 0, 0));
+	 lbId.setHorizontalAlignment(SwingConstants.RIGHT);
+	 lbId.setFont(new Font("Book Antiqua", Font.BOLD, 20));	 
+	 panel_1.add(lbId);	 
+	 textId.setHorizontalAlignment(SwingConstants.CENTER);
+	 textId.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+	 panel_1.add(textId);
+	 lbPhoto.setFont(new Font("Book Antiqua", Font.BOLD, 20));
+	 imgPhoto.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+	 imgPhoto.setHorizontalAlignment(SwingConstants.CENTER);
+	 panel_1.add(lbPhoto);
+	 panel_1.add(imgPhoto);
+	 panel_11.add(panel_2);
+	 panel_2.setLayout(new GridLayout(2, 1, 0, 0));
+	 lbNom.setHorizontalAlignment(SwingConstants.CENTER);
+	 lbNom.setFont(new Font("Book Antiqua", Font.BOLD, 20));	 
+	 panel_2.add(lbNom);	 
+	 textNom.setHorizontalAlignment(SwingConstants.CENTER);
+	 textNom.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+	 panel_2.add(textNom);	
+	 panel_11.add(panel_3);
+	 panel_3.setLayout(new GridLayout(1, 1, 0, 0));
+	 lbSexe.setHorizontalAlignment(SwingConstants.CENTER);
+	 lbSexe.setFont(new Font("Book Antiqua", Font.BOLD, 20));	 
+	 panel_3.add(lbSexe);
+	 groupSexe.add(textSexeF);
+	 groupSexe.add(textSexeH);	
+	 textSexeF.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+	 textSexeF.setActionCommand("FEMELLE");	 
+	 panel_3.add(textSexeF);
+	 textSexeH.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+	 textSexeH.setActionCommand("MALE");	 
+	 panel_3.add(textSexeH);
+	 panel_11.add(panel_8);
+	 panel_8.setLayout(new GridLayout(1, 1, 0, 0));
+	 lbAge.setHorizontalAlignment(SwingConstants.RIGHT);
+	 lbAge.setFont(new Font("Book Antiqua", Font.BOLD, 20));	 
+	 panel_8.add(lbAge);	 
+	 textAge.setHorizontalAlignment(SwingConstants.CENTER);
+	 textAge.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+	 panel_8.add(textAge);	 
+	 panel_11.add(panel_4);
+	 panel_4.setLayout(new GridLayout(2, 1, 0, 0));
+	 lbRobe.setHorizontalAlignment(SwingConstants.CENTER);
+	 lbRobe.setFont(new Font("Book Antiqua", Font.BOLD, 20));	 
+	 panel_4.add(lbRobe);
+	 textRobe.setHorizontalAlignment(SwingConstants.CENTER);
+	 textRobe.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+	 panel_4.add(textRobe);	 
+	 panel_11.add(panel_5);
+	 panel_5.setLayout(new GridLayout(2, 1, 0, 0));
+	 lbType.setHorizontalAlignment(SwingConstants.CENTER);
+	 lbType.setFont(new Font("Book Antiqua", Font.BOLD, 20));	 
+	 panel_5.add(lbType);	 
+	 textType.setHorizontalAlignment(SwingConstants.CENTER);
+	 textType.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+	 panel_5.add(textType);	 
+	 panel_11.add(panel_6);
+	 panel_6.setLayout(new GridLayout(2, 1, 0, 0));
+	 lbRace.setHorizontalAlignment(SwingConstants.CENTER);
+	 lbRace.setFont(new Font("Book Antiqua", Font.BOLD, 20));	 
+	 panel_6.add(lbRace);	 
+	 textRace.setHorizontalAlignment(SwingConstants.CENTER);
+	 textRace.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+	 panel_6.add(textRace);	 
+	 panel_11.add(panel_7);
+	 panel_7.setLayout(new GridLayout(2, 1, 0, 0));
+	 lbProprietaire.setHorizontalAlignment(SwingConstants.CENTER);
+	 lbProprietaire.setFont(new Font("Book Antiqua", Font.BOLD, 20));	 
+	 panel_7.add(lbProprietaire);	 
+	 textProprietaire.setHorizontalAlignment(SwingConstants.CENTER);
+	 textProprietaire.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+	 panel_7.add(textProprietaire);	 
+	 panel_9.setPreferredSize(new Dimension(10, 30));
+	 panel.add(panel_9, BorderLayout.SOUTH);
+	 panel_9.setLayout(new GridLayout(1, 3, 40, 0));
+	 choiceForm.setFont(new Font("Book Antiqua", Font.BOLD, 15));
+	 choiceForm.setSelectedIndex(0);
+	 panel_9.add(choiceForm);
+	 btAnnuler.setFont(new Font("Book Antiqua", Font.BOLD, 15));
+	 panel_9.add(btAnnuler);
+	 btAjouter.setFont(new Font("Book Antiqua", Font.BOLD, 15));
+	 panel_9.add(btAjouter);
+	 choiceForm.addActionListener(this);
+	 this.btAnnuler.addActionListener(this);
+	 this.btAjouter.addActionListener(this);
+	    textAge.addKeyListener(new KeyAdapter() {
+	         public void keyTyped(KeyEvent e) {
+	             char c = e.getKeyChar();
+	             if ( ((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
+	                  e.consume();  // ignorer l'événement
+	             }
+	         }
+	      });
+	 panel_10.setLayout(new BorderLayout(0, 0));
+	 lbTitre.setPreferredSize(new Dimension(160, 50));
+	 lbTitre.setHorizontalAlignment(SwingConstants.CENTER);
+	 lbTitre.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 25));
+	 panel_10.add(lbTitre, BorderLayout.NORTH);
+	 titreChevaux.setHorizontalAlignment(SwingConstants.CENTER);
+	 titreChevaux.setFont(new Font(titreChevaux.getText(), Font.CENTER_BASELINE, 20));
+	 panel_10.add(scrollTab, BorderLayout.CENTER);
+	 tableChevaux.setShowVerticalLines(false);
+	 tableChevaux.setEnabled(false);
+	 tableChevaux.setRowHeight(30);
+	 tableChevaux.setFont(new Font("Arial Unicode MS", Font.PLAIN, 18));
 	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Stub de la méthode généré automatiquement
 		if(e.getSource()==this.btAnnuler){
-			this.txtId.setText("");
-			this.txtNom.setText("");this.txtNom.setBackground(Color.WHITE);
-			this.txtSexeF.setSelected(true);
-			this.txtRobe.setText("");this.txtRobe.setBackground(Color.WHITE);
-			this.txtType.setText("");this.txtType.setBackground(Color.WHITE);
-			this.txtRace.setText("");this.txtRace.setBackground(Color.WHITE);
-			this.txtProprietaire.setText("");this.txtProprietaire.setBackground(Color.WHITE);
-			this.txtAge.setText("");this.txtAge.setBackground(Color.WHITE);	
-			//IMG Cheval
+			this.textId.setText("");this.imgPhoto.setIcon(new ImageIcon(""));
+			this.textNom.setText("");this.groupSexe.clearSelection();this.textAge.setText("");
+			this.textRobe.setText("");this.textType.setText("");this.textRace.setText("");this.textProprietaire.setText("");
 		}
 		else if (e.getSource()==this.btAjouter) {
-			int selection = choiceForm.getSelectedIndex();
-			switch(selection) {
+			Cheval unCheval = ModeleCheval.selectWhere(textNom.getText());
+			switch(choiceForm.getSelectedIndex()) {
 			case 0: //VISUALISE
 			{
-				Cheval unCheval = ModeleCheval.selectWhere(txtNom.getText());
 				if(unCheval == null) {
-					this.txtNom.setBackground(Color.RED);
-					JOptionPane.showMessageDialog(this, "Veuillez vérifier le nom du cheval !");
+					JOptionPane.showMessageDialog(this, " Veuillez vérifier le nom du cheval ! "," Erreur de saisie ",JOptionPane.ERROR_MESSAGE);
 				}
 				else {
-					this.txtNom.setBackground(Color.WHITE);	
-					this.txtId.setText(String.valueOf(unCheval.getId()));
-					this.txtNom.setText(unCheval.getNom());
-					this.txtSexeF.setSelected(true);//A VERIFIER
-					this.txtRobe.setText(String.valueOf(unCheval.getRobe()));
-					this.txtType.setText(unCheval.getType());
-					this.txtRace.setText(unCheval.getRace());
-					this.txtProprietaire.setText(unCheval.getProprietaire());
-					this.txtAge.setText(String.valueOf(unCheval.getAge()));
-					//image
-					JOptionPane.showMessageDialog(this, "Visualisation reussie");
+					this.textId.setText(String.valueOf(unCheval.getId()));
+					this.textNom.setText(unCheval.getNom());
+					if (unCheval.getSexe().equals("FEMELLE")){textSexeF.setSelected(true);}
+					else if (unCheval.getSexe().equals("MALE")){textSexeH.setSelected(true);}
+					else {this.groupSexe.clearSelection();}
+					this.textRobe.setText(String.valueOf(unCheval.getRobe()));
+					this.textType.setText(unCheval.getType());
+					this.textRace.setText(unCheval.getRace());
+					this.textProprietaire.setText(unCheval.getProprietaire());
+					this.textAge.setText(String.valueOf(unCheval.getAge()));
+					this.imgPhoto.setIcon(new ImageIcon("//NASCCB/web/Ecurie" + unCheval.getImage()));	
+					JOptionPane.showMessageDialog(this, " Visualisation réalisé avec succès ! "," Action réussie ",JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 			break;
-			case 1://AJOUTER
+			case 1: //AJOUTER
 				try{
-					this.txtNom.getText();
-					if((txtNom.getText().equals(""))||(txtRobe.getText().equals(""))||(txtType.getText().equals(""))||(txtRace.getText().equals(""))||(txtProprietaire.getText().equals(""))||(txtAge.getText().equals(""))) 
-					{
-						JOptionPane.showMessageDialog(this, "Veuillez saisir toutes les valeurs dans les champs vide");
-						this.txtNom.setBackground(Color.RED);
-						this.txtRobe.setBackground(Color.RED);
-						this.txtType.setBackground(Color.RED);
-						this.txtRace.setBackground(Color.RED);
-						this.txtProprietaire.setBackground(Color.RED);
-						this.txtAge.setBackground(Color.RED);
-					}
+					this.textNom.getText();
+					if((textNom.getText().equals(""))||(textRobe.getText().equals(""))||(textType.getText().equals(""))||(textRace.getText().equals(""))||(textProprietaire.getText().equals(""))||(textAge.getText().equals(""))) 
+					{ JOptionPane.showMessageDialog(this, " Veuillez vérifier ou compléter tous les champs ! "," Erreur de saisie ",JOptionPane.ERROR_MESSAGE); }
+					else if(unCheval != null)
+					{ JOptionPane.showMessageDialog(this, " Le nom saisi est déjà existante ! "," Action refusé ",JOptionPane.ERROR_MESSAGE); }
 					else {
-						this.txtNom.setBackground(Color.WHITE);	
-						Cheval unCheval = new Cheval(txtNom.getText(), txtSexeF.getText(), txtRobe.getText(), txtType.getText(), txtRace.getText(), txtProprietaire.getText(), Integer.parseInt(txtAge.getText()));
-						ModeleCheval.insert(unCheval);
-						JOptionPane.showMessageDialog(this, "Insertion reussie");
-						this.txtNom.setText("");
-						this.txtSexeF.setSelected(true);
-						this.txtRobe.setText("");
-						this.txtType.setText("");
-						this.txtRace.setText("");
-						this.txtProprietaire.setText("");
-						this.txtAge.setText("");
+						Cheval insertCheval = new Cheval(textNom.getText(), groupSexe.getSelection().getActionCommand(), textRobe.getText(), textType.getText(), textRace.getText(), textProprietaire.getText(), Integer.parseInt(textAge.getText()));
+						ModeleCheval.insert(insertCheval);
+						this.textId.setText("");this.imgPhoto.setIcon(new ImageIcon(""));
+						this.textNom.setText("");this.groupSexe.clearSelection();this.textAge.setText("");
+						this.textRobe.setText("");this.textType.setText("");this.textRace.setText("");this.textProprietaire.setText("");
+						JOptionPane.showMessageDialog(this, " Insertion réalisé avec succès ! "," Action réussie ",JOptionPane.INFORMATION_MESSAGE);						
 					}
-					this.setVisible(true); // fin d'enregistrement
+					this.setVisible(true); // fin d'ajout
 				}
 				catch (NumberFormatException exp)
-				{
-					JOptionPane.showMessageDialog(this,"Erreur dans la saisie");
-				}
+				{ JOptionPane.showMessageDialog(this," Veuillez vérifier tous les champs incorrects ! "," Erreur de saisie ",JOptionPane.ERROR_MESSAGE); }
 			break;
-				case 2://DELETE
+				case 2: //DELETE
 					try {
-						if(txtNom.getText().equals("")) {
-							this.txtNom.setBackground(Color.RED);
-							JOptionPane.showMessageDialog(this, "Veuillez saisir des valeurs dans les champs vide");
+						if(textNom.getText().equals("")) 
+							{ JOptionPane.showMessageDialog(this, " Veuillez vérifier le nom du cheval ! "," Action refusé ",JOptionPane.ERROR_MESSAGE); }
+						else {							
+							ModeleCheval.delete(textNom.getText());
+							this.textId.setText("");this.imgPhoto.setIcon(new ImageIcon(""));
+							this.textNom.setText("");this.groupSexe.clearSelection();this.textAge.setText("");
+							this.textRobe.setText("");this.textType.setText("");this.textRace.setText("");this.textProprietaire.setText("");
+							JOptionPane.showMessageDialog(this, " Suppression réalisé avec succès ! "," Action réussie ",JOptionPane.INFORMATION_MESSAGE);							
 						}
-						else {
-							this.txtNom.setBackground(Color.WHITE);
-							ModeleCheval.delete(txtNom.getText());
-							JOptionPane.showMessageDialog(this, "Suppression reussie");
-							this.txtNom.setText("");
-						}
-						this.setVisible(true);// fin d'enregistrement
+						this.setVisible(true);// fin de suppression
 					}
-					catch (NumberFormatException exp) {
-						this.txtNom.setBackground(Color.RED);
-						JOptionPane.showMessageDialog(this,"Erreur dans la saisie");
-					}
+					catch (NumberFormatException exp) 
+					{ JOptionPane.showMessageDialog(this," Veuillez vérifier tous les champs incorrects ! "," Erreur de saisie ",JOptionPane.ERROR_MESSAGE); }
 				break;
 			}
 		}
-	}
-	class StateListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("source : " + ((JRadioButton)e.getSource()).getText() + " - état : " + ((JRadioButton)e.getSource()).isSelected());
+	}	
+	//extraire les Chevaux 	
+	public Object [][] extraireChevaux () {
+		ArrayList <Cheval> lesChevaux = ModeleCheval.selectAll();
+		Object [][] donnees = new Object [lesChevaux.size()][7];
+		int i =0;
+		for (Cheval unCheval : lesChevaux) {
+			donnees[i][0] = unCheval.getNom();
+			donnees[i][1] = unCheval.getSexe();
+			donnees[i][2] = unCheval.getAge();
+			donnees[i][3] = unCheval.getProprietaire();
+			donnees[i][4] = unCheval.getRace();
+			donnees[i][5] = unCheval.getRobe();
+			donnees[i][6] = unCheval.getType();
+			i++;
 		}
+		return donnees;
 	}
 }

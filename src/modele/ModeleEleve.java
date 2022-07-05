@@ -83,10 +83,10 @@ public class ModeleEleve
 			+ unEleve.getSexe() + "', "
 			+ unEleve.getAge() + ", '"
 			+ unEleve.getAdresse() + "', '"
-			+ "CCB', '"
+			+ unEleve.getMdp() + "', '"
 			+ unEleve.getMail() + "', "
 			+ unEleve.getGalop() + ", '"
-			+ "./images/avatars/img_user.jpg');";
+			+ "/images/avatars/img_user.jpg');";
 		try {
 			BDD uneBDD = new BDD();
 			uneBDD.seConnecter();

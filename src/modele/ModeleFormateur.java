@@ -39,7 +39,38 @@ public class ModeleFormateur
 			}
 		return lesFormateurs;
 	}
-	public static Formateur selectWhere(String mail, String mdp) {
+	public static Formateur selectWhere(String mail) {
+		String requete = "select * from Formateur where adressemail='" + mail + "';";
+		Formateur unFormateur = null;
+		try {
+			BDD uneBDD = new BDD();
+			uneBDD.seConnecter();
+			Statement unStat = uneBDD.getMaConnexion().createStatement();
+			ResultSet unRes = unStat.executeQuery(requete);
+			if(unRes.next())
+			{
+				int idformateur = unRes.getInt("idformateur");
+				String login = unRes.getString("login");
+				int privilege = unRes.getInt("privilege");
+				String prenom = unRes.getString("prenom");
+				String nom = unRes.getString("nom");
+				int age = unRes.getInt("age");
+				int galop = unRes.getInt("galop");
+				String sexe = unRes.getString("sexe");
+				String mdp = unRes.getString("mdp");
+				// adressemail
+				unFormateur = new Formateur(idformateur, login, privilege, prenom, nom, age, galop, sexe, mail, mdp);
+			}
+			unStat.close();
+			unRes.close();
+			uneBDD.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'execution de la requete " + requete);
+		}
+		return unFormateur;
+	}
+	public static Formateur selectCompte(String mail, String mdp) {
 		String requete = "select * from Formateur where adressemail='" + mail + "' and mdp='" + mdp + "';";
 		Formateur unFormateur = null;
 		try {
