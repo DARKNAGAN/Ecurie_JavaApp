@@ -29,47 +29,30 @@ public class VueConnexion extends JPanel implements ActionListener
 	
 	public VueConnexion()
 	{
-		this.setBackground(new Color(222,220,203));
 		this.add(panel);
-		panel.setBackground(new Color(222,220,203));		
 		panel.setLayout(new BorderLayout(0, 30));
 		panel.add(header, BorderLayout.NORTH);
 		header.setLayout(new GridLayout(0, 1, 0, 0));
-		header.setBackground(new Color(222,220,203));
 		lbTitre.setHorizontalAlignment(SwingConstants.CENTER);
-		lbTitre.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 25));		
-		header.add(lbTitre);		
+		lbTitre.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 30));
+		header.add(lbTitre);
 		panel.add(content, BorderLayout.CENTER);
 		content.setLayout(new GridLayout(0, 1, 0, 0));
-		content.setBackground(new Color(222,220,203));
 		content.add(forms);
 		forms.setLayout(new GridLayout(0, 1, 0, 20));
-		forms.setBackground(new Color(222,220,203));		
 		mail.setPreferredSize(new Dimension(10, 40));
-		mail.setBackground(new Color(222,220,203));
 		forms.add(mail);
-			lbMail.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 20));
-			mailField.setFont(new Font("Bodoni MT", Font.PLAIN, 18));
 			mail.setLayout(new BoxLayout(mail, BoxLayout.X_AXIS));
 			mail.add(lbMail);
 			mail.add(mailField);
-		mdp.setBackground(Color.YELLOW);
 		mdp.setPreferredSize(new Dimension(10, 40));
-		mdp.setBackground(new Color(222,220,203));
 		forms.add(mdp);
 			mdp.setLayout(new BoxLayout(mdp, BoxLayout.X_AXIS));
-			lbMdp.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 20));
 			mdp.add(lbMdp);
-			mdpField.setFont(new Font("Dialog", Font.PLAIN, 15));
 			mdp.add(mdpField);
-		footer.setBackground(new Color(222,220,203));		
 		panel.add(footer, BorderLayout.SOUTH);
-		btAnnuler.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 20));
-		btSeConnecter.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 20));
 		footer.setLayout(new GridLayout(1, 2, 30, 0));
-		btAnnuler.setBackground(new Color(222,220,203));
 		footer.add(btAnnuler);
-		btSeConnecter.setBackground(new Color(222,220,203));
 		footer.add(btSeConnecter);
 		btAnnuler.addActionListener(this);
 		btSeConnecter.addActionListener(this);
@@ -90,11 +73,11 @@ public class VueConnexion extends JPanel implements ActionListener
 			}
 			else {
 				JOptionPane.showMessageDialog(this,	"Bienvenue  " + unFormateur.getNom() +"   " + unFormateur.getPrenom()," Connexion réussie ",JOptionPane.INFORMATION_MESSAGE);
-							// ouvrir le menu général
-							new Generale(unFormateur);
-							this.mailField.setText("");
-							this.mdpField.setText("");
-							Gestion.rendreVisible(false);
+				// ouvrir le menu général
+				new Generale(unFormateur);
+				this.mailField.setText("");
+				this.mdpField.setText("");
+				Gestion.rendreVisible(false);
 			}
 		}
 	}

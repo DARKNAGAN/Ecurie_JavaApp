@@ -104,4 +104,55 @@ public class ModeleCheval {
 			System.out.println("Erreur d'execution de la requete " + requete);
 		}
 		}
+	public static ArrayList<Cheval> selectChoose()	{
+		ArrayList<Cheval> lesChevaux = new ArrayList<Cheval>();
+		String requete = "select idcheval,nom from Cheval;";
+		try {
+			BDD uneBDD = new BDD();
+			uneBDD.seConnecter();
+			Statement unStat = uneBDD.getMaConnexion().createStatement();
+			ResultSet unRes = unStat.executeQuery(requete);
+			while(unRes.next()) {
+				int id = unRes.getInt("idcheval");
+				String nom = unRes.getString("nom");
+				Cheval unCheval = new Cheval(id, nom);
+				lesChevaux.add(unCheval);
+			}
+			unStat.close();
+			unRes.close();
+			uneBDD.seDeconnecter();
+		}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'execution de la requete " + requete);
+		}
+		return lesChevaux;
+	}
+	public static Object [] extraireChevaux () {
+		ArrayList <Cheval> lesChevaux = selectChoose();
+		Object [] donnees = new Object [lesChevaux.size()+1];
+		int i = 1;
+		for (Cheval unCheval : lesChevaux) {
+			donnees[i] = unCheval.getId();
+			donnees[i] = unCheval.getNom();
+			i++;
+		}
+		return donnees;
+	}
+	//extraire les Chevaux 
+	public static Object [][] extraireChevaux2 () {
+		ArrayList <Cheval> lesChevaux = ModeleCheval.selectAll();
+		Object [][] donnees = new Object [lesChevaux.size()][7];
+		int i =0;
+		for (Cheval unCheval : lesChevaux) {
+			donnees[i][0] = unCheval.getNom();
+			donnees[i][1] = unCheval.getSexe();
+			donnees[i][2] = unCheval.getAge();
+			donnees[i][3] = unCheval.getProprietaire();
+			donnees[i][4] = unCheval.getRace();
+			donnees[i][5] = unCheval.getRobe();
+			donnees[i][6] = unCheval.getType();
+			i++;
+		}
+		return donnees;
+	}
 }

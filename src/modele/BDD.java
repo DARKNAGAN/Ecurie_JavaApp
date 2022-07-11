@@ -9,20 +9,20 @@ public class BDD {
 	private Connection maConnexion;
 	
 	public BDD() {
-		this.serveur = "nasccb:3307";
+		this.serveur = "serveur:port";
 		this.nombdd = "Ecurie";
-		this.user = "christian";
-		this.mdp = "F8orP#NRqd#oKLQ#";
+		this.user = "user";
+		this.mdp = "mdp";
 		this.maConnexion = null;
 	}
 	public void chargerPilote() {
-		// vérifie la présence du pilote JDBC MySQL
+		// vï¿½rifie la prï¿½sence du pilote JDBC MySQL
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
 		}
 		catch(ClassNotFoundException exp) {
 			System.out.println("Abscence du pilote JDBC !");
-			System.out.println("Vérifier Project -> Build Path -> Configure -> Libraries -> Add External JARs");
+			System.out.println("Vï¿½rifier Project -> Build Path -> Configure -> Libraries -> Add External JARs");
 		}
 	}
 	public void seConnecter() {
@@ -33,16 +33,16 @@ public class BDD {
 			this.maConnexion = DriverManager.getConnection(url, this.user, this.mdp);
 		}
 		catch(SQLException exp) {
-			System.out.println("Impossible de se connecter à  " + url);
+			System.out.println("Impossible de se connecter ï¿½ " + url);
 		}
 	}
 	public void seDeconnecter() {
-		// déconnexion au serveur de la BDD
+		// dï¿½connexion au serveur de la BDD
 		try {
 			if(this.maConnexion != null) this.maConnexion.close();
 		}
 		catch(SQLException exp) {
-			System.out.println("La déconnexion a échoué !");
+			System.out.println("La dï¿½connexion a ï¿½chouï¿½ !");
 		}
 	}
 	public Connection getMaConnexion()

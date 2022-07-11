@@ -11,18 +11,28 @@ public class ModeleCours
 	public static ArrayList<Cours> selectAll()
 	{
 		ArrayList<Cours> lesCours = new ArrayList<Cours>();
-		String requete = "select * from Cours;";
+		String requete = "SELECT GestionCours.*, Cours.*, CONCAT(Cours.heuredebut,' - ',Cours.heurefin) AS heure , CONCAT(Formateur.nom,' ', Formateur.prenom) AS formateur, CONCAT(Eleve.nom,' ', Eleve.prenom) AS eleve,Cheval.nom AS cheval FROM GestionCours\n"
+				+ "INNER JOIN Eleve ON GestionCours.ideleve = Eleve.ideleve INNER JOIN Cheval ON GestionCours.idcheval = Cheval.idcheval\n"
+				+ "INNER JOIN Cours ON GestionCours.idcours = Cours.idcours INNER JOIN Formateur ON Cours.idformateur = Formateur.idformateur;";
 		try {
 			BDD uneBDD = new BDD();
 			uneBDD.seConnecter();
 			Statement unStat = uneBDD.getMaConnexion().createStatement();
 			ResultSet unRes = unStat.executeQuery(requete);
 			while(unRes.next()) {
-				int idcours = unRes.getInt("idcours");	
-				String datecours = unRes.getString("datecours");
+				int idcours = unRes.getInt("GestionCours.idcours");
+				int ideleve = unRes.getInt("ideleve");
+				int idcheval = unRes.getInt("idcheval");
+				int idformateur = unRes.getInt("idformateur");
+				String note = unRes.getString("note");
 				String heuredebut = unRes.getString("heuredebut");
 				String heurefin = unRes.getString("heurefin");
-				Cours unCours = new Cours(idcours, datecours, heuredebut, heurefin);
+				String datecours = unRes.getString("datecours");
+				String heure = unRes.getString("heure");
+				String formateur = unRes.getString("formateur");
+				String eleve = unRes.getString("eleve");
+				String nomcheval = unRes.getString("cheval");
+				Cours unCours = new Cours(idcours, ideleve, idcheval, idformateur, datecours, note, heuredebut, heurefin, heure, formateur, eleve, nomcheval);
 				lesCours.add(unCours);
 			}
 			unStat.close();
@@ -69,9 +79,12 @@ public static void delete(String datecours, String heuredebut) {
 		System.out.println("Erreur d'execution de la requete " + requete);
 	}
 }
-public static Cours selectWhere(String datecours, String heuredebut)
+public static Cours selectWhere(String datecours/*, String heuredebut, String heurefin*/)
 {
-	String requete = "select * from Cours where datecours='" + datecours + "' and heuredebut='" + heuredebut + "';";
+	String requete = "SELECT GestionCours.*, Cours.*, CONCAT(Cours.heuredebut,' - ',Cours.heurefin) AS heure , CONCAT(Formateur.nom,' ', Formateur.prenom) AS formateur, CONCAT(Eleve.nom,' ', Eleve.prenom) AS eleve,Cheval.nom AS cheval FROM GestionCours\n"
+			+ "INNER JOIN Eleve ON GestionCours.ideleve = Eleve.ideleve INNER JOIN Cheval ON GestionCours.idcheval = Cheval.idcheval\n"
+			+ "INNER JOIN Cours ON GestionCours.idcours = Cours.idcours INNER JOIN Formateur ON Cours.idformateur = Formateur.idformateur\n"
+			+ "WHERE datecours='" + datecours + "';";
 	Cours unCours = null;
 	try {
 		BDD uneBDD = new BDD();
@@ -80,8 +93,19 @@ public static Cours selectWhere(String datecours, String heuredebut)
 		ResultSet unRes = unStat.executeQuery(requete);
 		if(unRes.next())
 		{
+			int idcours = unRes.getInt("GestionCours.idcours");
+			int ideleve = unRes.getInt("ideleve");
+			int idcheval = unRes.getInt("idcheval");
+			int idformateur = unRes.getInt("idformateur");
+			//datecours
+			String note = unRes.getString("note");
+			String heuredebut = unRes.getString("heuredebut");
 			String heurefin = unRes.getString("heurefin");
-			unCours = new Cours(datecours, heuredebut, heurefin);
+			String heure = unRes.getString("heure");
+			String formateur = unRes.getString("formateur");
+			String eleve = unRes.getString("eleve");
+			String nomcheval = unRes.getString("cheval");
+			unCours = new Cours(idcours, ideleve, idcheval, idformateur, datecours, note, heuredebut, heurefin, heure, formateur, eleve, nomcheval);
 		}
 		unStat.close();
 		unRes.close();
@@ -92,4 +116,22 @@ public static Cours selectWhere(String datecours, String heuredebut)
 	}
 	return unCours;
 	}
+
+//Extraire les Cours
+public static Object [][] extraireCours ()
+{
+	ArrayList <Cours> lesCours = ModeleCours.selectAll();
+	Object [][] donnees = new Object [lesCours.size()][5];
+	int i =0;
+	for (Cours unCours : lesCours)
+	{
+		donnees[i][0] = unCours.getDateCours();
+		donnees[i][1] = unCours.getHeure();
+		donnees[i][2] = unCours.getFormateur();
+		donnees[i][3] = unCours.getEleve();
+		donnees[i][4] = unCours.getnomCheval();
+		i++;
+	}
+	return donnees;
+}
 }

@@ -4,13 +4,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
+
 import controleur.Eleve;
 
 public class ModeleEleve 
 {
 	public static ArrayList<Eleve> selectAll() {
 		ArrayList<Eleve> lesEleves = new ArrayList<Eleve>();
-		String requete = "select * from Eleve;";
+		String requete = "select *, CONCAT(nom,' ', prenom) AS eleve from Eleve;";
 		try {
 				BDD uneBDD = new BDD();
 				uneBDD.seConnecter();
@@ -19,7 +21,7 @@ public class ModeleEleve
 				while(unRes.next()) {
 					int id = unRes.getInt("ideleve");
 					int privilege = unRes.getInt("privilege");
-					String record = unRes.getString("dateenregistre");
+					Date record = unRes.getDate("dateenregistre");
 					String pseudo = unRes.getString("pseudo");
 					String prenom = unRes.getString("prenom");
 					String nom = unRes.getString("nom");
@@ -30,7 +32,8 @@ public class ModeleEleve
 					String mail = unRes.getString("adressemail");
 					int galop = unRes.getInt("galop");
 					String image = unRes.getString("imageeleve");
-					Eleve unEleve = new Eleve(id, privilege, record, pseudo, prenom, nom, sexe, age, adresse, mdp, mail, galop, image);
+					String eleve = unRes.getString("eleve");
+					Eleve unEleve = new Eleve(id, privilege, record, pseudo, prenom, nom, sexe, age, adresse, mdp, mail, galop, image, eleve);
 					lesEleves.add(unEleve);
 				}
 				unStat.close();
@@ -43,7 +46,7 @@ public class ModeleEleve
 		return lesEleves;
 	}
 	public static Eleve selectWhere(String mail) {
-		String requete = "select * from Eleve where adressemail='" + mail + "';";
+		String requete = "select *, CONCAT(nom,' ', prenom) AS eleve from Eleve where adressemail='" + mail + "';";
 		Eleve unEleve = null;
 		try {
 			BDD uneBDD = new BDD();
@@ -53,7 +56,7 @@ public class ModeleEleve
 			if(unRes.next()) {
 				int id = unRes.getInt("ideleve");
 				int privilege = unRes.getInt("privilege");
-				String record = unRes.getString("dateenregistre");
+				Date record = unRes.getDate("dateenregistre");
 				String pseudo = unRes.getString("pseudo");
 				String prenom = unRes.getString("prenom");
 				String nom = unRes.getString("nom");
@@ -64,7 +67,8 @@ public class ModeleEleve
 				//adressemail
 				int galop = unRes.getInt("galop");
 				String image = unRes.getString("imageeleve");
-				unEleve = new Eleve(id, privilege, record, pseudo, prenom, nom, sexe, age, adresse, mdp, mail, galop, image);
+				String eleve = unRes.getString("eleve");
+				unEleve = new Eleve(id, privilege, record, pseudo, prenom, nom, sexe, age, adresse, mdp, mail, galop, image, eleve);
 			}
 			unStat.close();
 			unRes.close();
@@ -147,5 +151,57 @@ public class ModeleEleve
 		catch(SQLException exp) {
 			System.out.println("Erreur d'execution de la requete " + requete);
 		}
+	}
+	public static ArrayList<Eleve> selectChoose() {
+		ArrayList<Eleve> lesEleves = new ArrayList<Eleve>();
+		String requete = "select ideleve, CONCAT(nom,' ', prenom) AS eleve from Eleve;";
+		try {
+				BDD uneBDD = new BDD();
+				uneBDD.seConnecter();
+				Statement unStat = uneBDD.getMaConnexion().createStatement();
+				ResultSet unRes = unStat.executeQuery(requete);
+				while(unRes.next()) {
+					int id = unRes.getInt("ideleve");
+					String eleve = unRes.getString("eleve");
+					Eleve unEleve = new Eleve(id, eleve);
+					lesEleves.add(unEleve);
+				}
+				unStat.close();
+				unRes.close();
+				uneBDD.seDeconnecter();
+			}
+		catch(SQLException exp) {
+			System.out.println("Erreur d'execution de la requete " + requete);
+			}
+		return lesEleves;
+	}
+	public static Object [] extraireEleves () {
+		ArrayList <Eleve> lesEleves = selectChoose();
+		Object [] donnees = new Object [lesEleves.size()+1];
+		int i = 1;
+		for (Eleve unEleve : lesEleves) {
+			donnees[i] = unEleve.getId();
+			donnees[i] = unEleve.getEleve();
+			i++;
+		}
+		return donnees;
+	}
+	
+	//extraire les Eleves 
+	public static Object [][] extraireEleves2 () {
+		ArrayList <Eleve> lesEleves = ModeleEleve.selectAll();
+		Object [][] donnees = new Object [lesEleves.size()][7];
+		int i =0;
+		for (Eleve unEleve : lesEleves) {
+			donnees[i][0] = unEleve.getPseudo();
+			donnees[i][1] = unEleve.getMail();
+			donnees[i][2] = unEleve.getEleve();
+			donnees[i][3] = unEleve.getAdresse();
+			donnees[i][4] = unEleve.getSexe();
+			donnees[i][5] = unEleve.getAge();
+			donnees[i][6] = unEleve.getGalop();
+			i++;
+		}
+		return donnees;
 	}
 }

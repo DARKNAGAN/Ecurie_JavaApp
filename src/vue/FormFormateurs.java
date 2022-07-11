@@ -4,11 +4,11 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 
+import org.jdesktop.swingx.prompt.PromptSupport;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.awt.event.KeyAdapter;
 
 import controleur.Formateur;
@@ -17,31 +17,29 @@ import modele.ModeleFormateur;
 public class FormFormateurs extends JPanel implements ActionListener 
 {
 	private static final long serialVersionUID = -7023992128997426855L;
-	String test, login, prenom, nom, sexe, mail, mdp= "";
+	String test, prenom, nom, sexe, mail, mdp= "";
 	int id, privilege, age, selection;
 	String[] galop= { "0", "1", "2", "3", "4", "5", "6", "7" }; 
 	String[] formState = { " VISUALISER ", " AJOUTER ", " SUPPRIMER " };
-	String[] titresFormateur = new String[] {" Pseudo "," E-mail "," Prénom "," Nom "," Sexe "," Age "," Galop "};
-	Object[][] dataFormateur = extraireFormateurs();
-	private final JPanel panel = new JPanel();
-	private final JPanel panel_1 = new JPanel();
-	private final JPanel panel_3 = new JPanel();
-	private final JPanel panel_4 = new JPanel();
-	private final JPanel panel_5 = new JPanel();
-	private final JPanel panel_6 = new JPanel();
-	private final JPanel panel_7 = new JPanel();
-	private final JPanel panel_8 = new JPanel();
-	private final JPanel panel_11 = new JPanel();
-	private final JPanel panel_12 = new JPanel();
-	private final JPanel panel_13 = new JPanel();
-	private final JPanel panel_10 = new JPanel();
-	private final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel_13, panel_12);
+	String[] titresFormateur = new String[] {" E-mail "," Formateur "," Sexe "," Age "," Galop "};
+	Object[][] dataFormateur = ModeleFormateur.extraireFormateurs2();
+	private final JPanel panelForm = new JPanel();
+	private final JPanel panelPrivilegeID = new JPanel();
+	private final JPanel panelMail = new JPanel();
+	private final JPanel panelMdp = new JPanel();
+	private final JPanel panelPrenom = new JPanel();
+	private final JPanel panelNom = new JPanel();
+	private final JPanel panelGalopAge = new JPanel();
+	private final JPanel panelButton = new JPanel();
+	private final JPanel panelTable = new JPanel();
+	private final JPanel panelFormulaire = new JPanel();
+	private final JPanel panelSexe = new JPanel();
+	private final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelFormulaire, panelTable);
 	private final JTable tableFormateurs = new JTable(dataFormateur, titresFormateur);
 	private final JScrollPane scrollTab = new JScrollPane(tableFormateurs);
 	private final JLabel lbTitre = new JLabel(" Panneau de gestion des formateurs ");
 	private final JLabel lbId = new JLabel(" ID : ");
 	private final JLabel lbPrivilege = new JLabel(" Privilège : ");
-	private final JLabel lbLogin = new JLabel("Pseudo : ");
 	private final JLabel lbMail = new JLabel(" E-mail : ");
 	private final JLabel lbMdp = new JLabel(" Mot de passe : ");
 	private final JLabel lbPrenom = new JLabel(" Prénom : ");
@@ -49,9 +47,7 @@ public class FormFormateurs extends JPanel implements ActionListener
 	private final JLabel lbAge = new JLabel(" Age : ");
 	private final JLabel lbSexe = new JLabel(" Sexe : ");
 	private final JLabel lbGalop = new JLabel(" Galop : ");
-	private final JLabel titreFormateur= new JLabel(" Liste des Formateurs ");
 	private final JLabel textId = new JLabel();
-	private final JLabel textLogin = new JLabel();
 	private final JLabel textPrivilege = new JLabel();
 	private final JPasswordField textMdp = new JPasswordField();
 	private final JTextField textPrenom = new JTextField();
@@ -72,101 +68,72 @@ public class FormFormateurs extends JPanel implements ActionListener
 	{
 		setLayout(new BorderLayout(0, 0));
 		this.add(splitPane);
-		panel_13.setPreferredSize(new Dimension(500, 10));
-		panel_13.setLayout(new BorderLayout(0, 30));
-		panel_13.add(panel, BorderLayout.CENTER);
-		panel.setLayout(new GridLayout(0, 1, 0, 0));
-		panel.add(panel_1);
-		panel_1.setLayout(new GridLayout(1, 4, 0, 0));
+		panelFormulaire.setPreferredSize(new Dimension(500, 10));
+		panelFormulaire.setLayout(new BorderLayout(0, 30));
+		panelFormulaire.add(panelForm, BorderLayout.CENTER);
+		panelForm.setLayout(new GridLayout(0, 1, 0, 0));
+		panelForm.add(panelPrivilegeID);
+		panelPrivilegeID.setLayout(new GridLayout(1, 4, 0, 0));
 		lbId.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbId.setFont(new Font("Book Antiqua", Font.BOLD, 20));
-		panel_1.add(lbId);
-		textId.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		panelPrivilegeID.add(lbId);
 		textId.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(textId);
+		panelPrivilegeID.add(textId);
 		lbPrivilege.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbPrivilege.setFont(new Font("Book Antiqua", Font.BOLD, 20));
-		panel_1.add(lbPrivilege);
-		textPrivilege.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		panelPrivilegeID.add(lbPrivilege);
 		textPrivilege.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(textPrivilege);
-		panel.add(panel_3);
-		panel_3.setLayout(new GridLayout(1, 1, 0, 0));
-		lbLogin.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbLogin.setFont(new Font("Book Antiqua", Font.BOLD, 20));
-		panel_3.add(lbLogin);
-		textLogin.setFont(new Font("Bodoni MT", Font.BOLD, 20));
-		textLogin.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_3.add(textLogin);	
-		panel.add(panel_4);
-		panel.add(panel_5);
-		panel_5.setLayout(new GridLayout(0, 1, 0, 0));
+		panelPrivilegeID.add(textPrivilege);
+		panelForm.add(panelMail);
+		panelForm.add(panelMdp);
+		panelMdp.setLayout(new GridLayout(0, 1, 0, 0));
 		lbMdp.setHorizontalAlignment(SwingConstants.CENTER);
-		lbMdp.setFont(new Font("Book Antiqua", Font.BOLD, 20));
-		panel_5.add(lbMdp);
-		textMdp.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		panelMdp.add(lbMdp);
 		textMdp.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_5.add(textMdp);
-		panel_4.setLayout(new GridLayout(2, 1, 0, 0));
+		panelMdp.add(textMdp);
+		panelMail.setLayout(new GridLayout(2, 1, 0, 0));
 		lbMail.setHorizontalAlignment(SwingConstants.CENTER);
-		lbMail.setFont(new Font("Book Antiqua", Font.BOLD, 20));
-		panel_4.add(lbMail);
-		textMail.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		panelMail.add(lbMail);
 		textMail.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_4.add(textMail);
-		panel.add(panel_6);
-		panel_6.setLayout(new GridLayout(2, 1, 0, 0));
+		 PromptSupport.setPrompt("Indiquer l'e-mail d'un formateur", textMail);
+		panelMail.add(textMail);
+		panelForm.add(panelPrenom);
+		panelPrenom.setLayout(new GridLayout(2, 1, 0, 0));
 		lbPrenom.setHorizontalAlignment(SwingConstants.CENTER);
-		lbPrenom.setFont(new Font("Book Antiqua", Font.BOLD, 20));
-		panel_6.add(lbPrenom);
-		textPrenom.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		panelPrenom.add(lbPrenom);
 		textPrenom.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_6.add(textPrenom);
-		panel.add(panel_7);
-		panel_7.setLayout(new GridLayout(2, 1, 0, 0));
+		panelPrenom.add(textPrenom);
+		panelForm.add(panelNom);
+		panelNom.setLayout(new GridLayout(2, 1, 0, 0));
 		lbNom.setHorizontalAlignment(SwingConstants.CENTER);
-		lbNom.setFont(new Font("Book Antiqua", Font.BOLD, 20));
-		panel_7.add(lbNom);
-		textNom.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		panelNom.add(lbNom);
 		textNom.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_7.add(textNom);
-		panel_10.setLayout(new GridLayout(1, 3, 0, 0));
+		panelNom.add(textNom);
+		panelSexe.setLayout(new GridLayout(1, 3, 0, 0));
 		lbSexe.setHorizontalAlignment(SwingConstants.CENTER);
-		lbSexe.setFont(new Font("Book Antiqua", Font.BOLD, 20));
-		panel.add(panel_10);
-		panel_10.add(lbSexe);
+		panelForm.add(panelSexe);
+		panelSexe.add(lbSexe);
 		groupSexe.add(textSexeF);
 		groupSexe.add(textSexeH);
-		textSexeF.setFont(new Font("Bodoni MT", Font.BOLD, 20));
 		textSexeF.setActionCommand("FEMME");
-		panel_10.add(textSexeF);
-		textSexeH.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		panelSexe.add(textSexeF);
 		textSexeH.setActionCommand("HOMME");
-		panel_10.add(textSexeH);
-		panel.add(panel_8);
-		panel_8.setLayout(new GridLayout(1, 4, 0, 0));
+		panelSexe.add(textSexeH);
+		panelForm.add(panelGalopAge);
+		panelGalopAge.setLayout(new GridLayout(1, 4, 0, 0));
 		lbAge.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbAge.setFont(new Font("Book Antiqua", Font.BOLD, 20));
-		panel_8.add(lbAge);
-		textAge.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		panelGalopAge.add(lbAge);
 		textAge.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_8.add(textAge);
+		panelGalopAge.add(textAge);
 		lbGalop.setHorizontalAlignment(SwingConstants.RIGHT);
-		lbGalop.setFont(new Font("Book Antiqua", Font.BOLD, 20));
-		panel_8.add(lbGalop);
-		textGalop.setFont(new Font("Bodoni MT", Font.BOLD, 20));
+		panelGalopAge.add(lbGalop);
 		textGalop.setSelectedIndex(0);
-		panel_8.add(textGalop);
-		panel_11.setPreferredSize(new Dimension(10, 30));
-		panel_13.add(panel_11, BorderLayout.SOUTH);
-		panel_11.setLayout(new GridLayout(1, 3, 40, 0));
-		choiceForm.setFont(new Font("Book Antiqua", Font.BOLD, 15));
+		panelGalopAge.add(textGalop);
+		panelButton.setPreferredSize(new Dimension(23, 50));
+		panelFormulaire.add(panelButton, BorderLayout.SOUTH);
+		panelButton.setLayout(new GridLayout(1, 3, 40, 0));
 		choiceForm.setSelectedIndex(0);
-		panel_11.add(choiceForm);
-		btAnnuler.setFont(new Font("Book Antiqua", Font.BOLD, 15));
-		panel_11.add(btAnnuler);
-		btAjouter.setFont(new Font("Book Antiqua", Font.BOLD, 15));
-		panel_11.add(btAjouter);
+		panelButton.add(choiceForm);
+		panelButton.add(btAnnuler);
+		panelButton.add(btAjouter);
 		choiceForm.addActionListener(this);
 		this.btAnnuler.addActionListener(this);
 		this.btAjouter.addActionListener(this);
@@ -178,34 +145,29 @@ public class FormFormateurs extends JPanel implements ActionListener
 	             }
 	         }
 	      });
-		titreFormateur.setHorizontalAlignment(SwingConstants.CENTER);
-		titreFormateur.setFont(new Font(titreFormateur.getText(), Font.CENTER_BASELINE, 20));
-		panel_12.setLayout(new BorderLayout(0, 0));
-		lbTitre.setPreferredSize(new Dimension(160, 50));
+		panelTable.setLayout(new BorderLayout(0, 0));
+		lbTitre.setPreferredSize(new Dimension(150, 100));
 		lbTitre.setHorizontalAlignment(SwingConstants.CENTER);
-		lbTitre.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 25));
-		panel_12.add(lbTitre, BorderLayout.NORTH);
-		panel_12.add(scrollTab, BorderLayout.CENTER);
+		lbTitre.setFont(new Font("Book Antiqua", Font.BOLD | Font.ITALIC, 40));
+		panelTable.add(lbTitre, BorderLayout.NORTH);
+		panelTable.add(scrollTab, BorderLayout.CENTER);
 		tableFormateurs.setShowVerticalLines(false);
 		tableFormateurs.setEnabled(false);
 		tableFormateurs.setRowHeight(30);
-		tableFormateurs.setFont(new Font("Arial Unicode MS", Font.PLAIN, 18));
 	    TableColumnModel columnModel = tableFormateurs.getColumnModel();
-	    columnModel.getColumn(0).setPreferredWidth(50);
-	    columnModel.getColumn(1).setPreferredWidth(150);
-	    columnModel.getColumn(2).setPreferredWidth(50);
-	    columnModel.getColumn(3).setPreferredWidth(50);
+	    columnModel.getColumn(0).setPreferredWidth(150);
+	    columnModel.getColumn(1).setPreferredWidth(80);
+	    columnModel.getColumn(2).setPreferredWidth(10);
+	    columnModel.getColumn(3).setPreferredWidth(10);
 	    columnModel.getColumn(4).setPreferredWidth(10);
-	    columnModel.getColumn(5).setPreferredWidth(10);
-	    columnModel.getColumn(6).setPreferredWidth(10);
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==this.btAnnuler) {
-			this.textId.setText("");this.textLogin.setText("");this.textPrivilege.setText("");
-			this.textPrenom.setText("");this.textNom.setText("");this.textMail.setText("");this.textMdp.setText("");			
+			this.textId.setText("");this.textPrivilege.setText("");
+			this.textPrenom.setText("");this.textNom.setText("");this.textMail.setText("");this.textMdp.setText("");
 			this.textAge.setText("");this.textGalop.setSelectedIndex(0);this.groupSexe.clearSelection();
 		}
 		else if (e.getSource()==this.btAjouter) {
@@ -213,22 +175,21 @@ public class FormFormateurs extends JPanel implements ActionListener
 			Formateur unCompte = ModeleFormateur.selectCompte(textMail.getText(),new String(this.textMdp.getPassword()));
 			switch(choiceForm.getSelectedIndex()) {
 			case 0: //VISUALISE
-			{				
+			{
 				if(unEleve == null) 
 				{ JOptionPane.showMessageDialog(this, " Veuillez vérifier l'adresse mail saisie ! "," Erreur de saisie ",JOptionPane.ERROR_MESSAGE); }
-				else {					
+				else {
 					this.textId.setText(String.valueOf(unEleve.getId()));
 					this.textPrivilege.setText(String.valueOf(unEleve.getPrivilege()));
-					this.textLogin.setText(unEleve.getLogin());
 					//mail
 					this.textMdp.setText(unEleve.getMdp());
 					this.textPrenom.setText(unEleve.getPrenom());
 					this.textNom.setText(unEleve.getNom());
 					this.textAge.setText(String.valueOf(unEleve.getAge()));
-					this.textGalop.setSelectedIndex(unEleve.getGalop());				
+					this.textGalop.setSelectedIndex(unEleve.getGalop());
 					if (unEleve.getSexe().equals("FEMME")){textSexeF.setSelected(true);}
 					else if (unEleve.getSexe().equals("HOMME")){textSexeH.setSelected(true);}
-					else {this.groupSexe.clearSelection();}					
+					else {this.groupSexe.clearSelection();}
 					JOptionPane.showMessageDialog(this, " Visualisation réalisé avec succès ! "," Action réussie ",JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
@@ -257,9 +218,9 @@ public class FormFormateurs extends JPanel implements ActionListener
 						{ JOptionPane.showMessageDialog(this, " Veuillez vérifier l'adresse e-mail et confirmer le mot de passe ! "," Action refusé ",JOptionPane.ERROR_MESSAGE); }
 						else {
 							ModeleFormateur.delete(textMail.getText());
-							this.textId.setText("");this.textPrivilege.setText("");this.textLogin.setText("");
+							this.textId.setText("");this.textPrivilege.setText("");
 							this.textPrenom.setText("");this.textNom.setText("");this.textMail.setText("");this.textMdp.setText("");
-							this.groupSexe.clearSelection();this.textAge.setText("");this.textGalop.setSelectedIndex(0);								
+							this.groupSexe.clearSelection();this.textAge.setText("");this.textGalop.setSelectedIndex(0);
 							JOptionPane.showMessageDialog(this, " Suppression réalisé avec succès ! "," Action réussie ",JOptionPane.INFORMATION_MESSAGE);
 						}
 						this.setVisible(true);// fin de suppression
@@ -270,22 +231,4 @@ public class FormFormateurs extends JPanel implements ActionListener
 			}
 			}
 		}
-	//extraire les Formateurs 
-	public Object [][] extraireFormateurs () {
-		ArrayList <Formateur> lesFormateurs = ModeleFormateur.selectAll();
-		Object [][] donnees = new Object [lesFormateurs.size()][7];
-		int i =0;
-		for (Formateur unFormateur : lesFormateurs)
-		{
-			donnees[i][0] = unFormateur.getLogin();
-			donnees[i][1] = unFormateur.getMail();
-			donnees[i][2] = unFormateur.getPrenom();
-			donnees[i][3] = unFormateur.getNom();
-			donnees[i][4] = unFormateur.getSexe();
-			donnees[i][5] = unFormateur.getAge();
-			donnees[i][6] = unFormateur.getGalop();
-			i++;
-		}
-		return donnees;
-	}
 }
